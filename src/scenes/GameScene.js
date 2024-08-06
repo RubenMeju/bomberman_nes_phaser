@@ -1,3 +1,5 @@
+import { Player } from "../objects/Player.js";
+
 export class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: "GameScene" });
@@ -33,12 +35,8 @@ export class GameScene extends Phaser.Scene {
     // Activar la colisión del tilemap
     solidos.setCollisionByProperty({ suelo: true });
 
-    // Crear el sprite del jugador con físicas
-    this.jugador = this.physics.add.sprite(0, 0, "player", 0).setScale(2);
-    this.jugador.body.setSize(12, 14);
-
-    // El jugador no puede salir del mundo
-    this.jugador.setCollideWorldBounds(true);
+    // Crear el sprite del jugador con la clase Player
+    this.jugador = new Player(this, 0, 0, "player", 0);
 
     // Colisiones entre el jugador y el suelo
     this.physics.add.collider(this.jugador, solidos);
@@ -48,23 +46,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   update() {
-    const velocidad = 200; // Ajusta la velocidad según sea necesario
-
-    // Detectar si las teclas de dirección están siendo presionadas
-    if (this.cursors.left.isDown) {
-      this.jugador.setVelocityX(-velocidad); // Mover a la izquierda con velocidad
-    } else if (this.cursors.right.isDown) {
-      this.jugador.setVelocityX(velocidad); // Mover a la derecha con velocidad
-    } else {
-      this.jugador.setVelocityX(0); // Detener movimiento horizontal si no se presiona ninguna tecla
-    }
-
-    if (this.cursors.up.isDown) {
-      this.jugador.setVelocityY(-velocidad); // Mover hacia arriba con velocidad
-    } else if (this.cursors.down.isDown) {
-      this.jugador.setVelocityY(velocidad); // Mover hacia abajo con velocidad
-    } else {
-      this.jugador.setVelocityY(0); // Detener movimiento vertical si no se presiona ninguna tecla
-    }
+    // Actualizar el jugador
+    this.jugador.update(this.cursors);
   }
 }
