@@ -4,64 +4,10 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    // Escalar el sprite
     this.setScale(2);
-
-    // Ajustar el tamaño del collider
     this.body.setSize(12, 14);
-
-    // El jugador no puede salir del mundo
     this.setCollideWorldBounds(true);
-
-    // Inicializar la bomba como inactiva
     this.setActive(false).setVisible(false);
-  }
-
-  createAnimations(scene) {
-    scene.anims.create({
-      key: "bomba",
-      frames: scene.anims.generateFrameNumbers("player", {
-        start: 42,
-        end: 44,
-      }),
-      frameRate: 4,
-      repeat: -1,
-    });
-
-    scene.anims.create({
-      key: "explosion_center",
-      frames: [{ key: "player", frame: 86 }],
-      frameRate: 10,
-      repeat: 0,
-    });
-
-    scene.anims.create({
-      key: "explosion_right",
-      frames: [{ key: "player", frame: 85 }],
-      frameRate: 10,
-      repeat: 0,
-    });
-
-    scene.anims.create({
-      key: "explosion_left",
-      frames: [{ key: "player", frame: 87 }],
-      frameRate: 10,
-      repeat: 0,
-    });
-
-    scene.anims.create({
-      key: "explosion_up",
-      frames: [{ key: "player", frame: 72 }],
-      frameRate: 10,
-      repeat: 0,
-    });
-
-    scene.anims.create({
-      key: "explosion_down",
-      frames: [{ key: "player", frame: 100 }],
-      frameRate: 10,
-      repeat: 0,
-    });
   }
 
   explode() {
@@ -92,19 +38,10 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
       );
     });
 
-    // Eliminar la bomba original y reiniciar
+    // Reiniciar la bomba para su reutilización
     this.setActive(false).setVisible(false);
-    this.scene.time.delayedCall(
-      0,
-      () => {
-        this.setActive(false).setVisible(false); // Reiniciar la bomba para su reutilización
-      },
-      [],
-      this
-    );
+    this.setPosition(-100, -100); // Muevo la bomba fuera de la pantalla para evitar colisiones.
   }
 
-  update() {
-    // La lógica de actualización puede permanecer vacía si solo estás manejando animaciones con temporizadores
-  }
+  update() {}
 }
