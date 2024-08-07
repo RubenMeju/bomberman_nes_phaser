@@ -42,18 +42,44 @@ export class GameScene extends Phaser.Scene {
     // Colisiones entre el jugador y el suelo
     this.physics.add.collider(this.jugador, solidos);
 
-    // Crear el sprite de la bomba
-    this.bomba = new Bomba(this, 80, 64, "player"); /// revisar si uso el ultimo paramentro
-
     // Crear las teclas de dirección
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    // Crear la tecla SPACE
+    this.spaceBar = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
+
+    // Crear un grupo de bombas
+    this.bombas = this.physics.add.group({
+      classType: Bomba,
+      maxSize: this.maxBombas, // Limitar el tamaño del grupo a `maxBombas`
+      runChildUpdate: true, // Asegúrate de que el método update se llame para cada bomba
+    });
+
+    // Definir el límite de bombas en pantalla
+    this.maxBombas = 3;
   }
 
   update() {
     // Actualizar el jugador
     this.jugador.update(this.cursors);
 
-    // Actualizar la bomba
-    this.bomba.update();
+    // Crear una nueva bomba cuando se pulsa la tecla SPACE
+    if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) {
+      if (this.bombas.getLength() < this.maxBombas) {
+        // Obtener una bomba inactiva
+        const bomba = this.bombas.get(this.jugador.x, this.jugador.y, "player");
+
+        if (bomba) {
+          bomba.setActive(true).setVisible(true);
+          bomba.createAnimations(this);
+          bomba.anims.play("bomba"); // Iniciar la animación de la bomba
+
+          // Configurar el temporizador para la explosión
+          this.time.delayedCall(3000, () => bomba.explode(), [], bomba);
+        }
+      }
+    }
   }
 }
