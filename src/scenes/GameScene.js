@@ -19,13 +19,13 @@ export class GameScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor("#2e8b00");
 
-    let mapa = this.make.tilemap({ key: "mapa" });
-    let tilesets = mapa.addTilesetImage("tileSets", "tiles");
-    let solidos = mapa.createLayer("solidos", tilesets, 0, 0).setScale(2);
-    solidos.setCollisionByProperty({ suelo: true });
+    this.mapa = this.make.tilemap({ key: "mapa" });
+    let tilesets = this.mapa.addTilesetImage("tileSets", "tiles");
+    this.solidos = this.mapa.createLayer("solidos", tilesets, 0, 0).setScale(2);
+    this.solidos.setCollisionByProperty({ suelo: true });
 
     this.jugador = new Player(this, 0, 0, "player", 0);
-    this.physics.add.collider(this.jugador, solidos);
+    this.physics.add.collider(this.jugador, this.solidos);
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.spaceBar = this.input.keyboard.addKey(
@@ -89,14 +89,12 @@ export class GameScene extends Phaser.Scene {
 
     if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) {
       if (this.bombas.getTotalUsed() < this.maxBombas) {
-        // Cambia a getTotalUsed
         const bomba = this.bombas.get(this.jugador.x, this.jugador.y, "player");
 
         if (bomba) {
           bomba.setActive(true).setVisible(true);
-          bomba.anims.play("bomba"); // Iniciar la animación de la bomba
+          bomba.anims.play("bomba");
 
-          // Configurar el temporizador para la explosión
           this.time.delayedCall(3000, () => bomba.explode(), [], bomba);
         }
       }
