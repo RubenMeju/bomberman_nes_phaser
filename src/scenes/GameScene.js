@@ -1,4 +1,5 @@
 import { Player } from "../objects/Player.js";
+import { Bomba } from "../objects/Bomba.js";
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -41,6 +42,9 @@ export class GameScene extends Phaser.Scene {
     // Colisiones entre el jugador y el suelo
     this.physics.add.collider(this.jugador, solidos);
 
+    // Crear el sprite de la bomba
+    this.bomba = new Bomba(this, 80, 64, "player"); /// revisar si uso el ultimo paramentro
+
     // Crear las teclas de dirección
     this.cursors = this.input.keyboard.createCursorKeys();
   }
@@ -48,5 +52,8 @@ export class GameScene extends Phaser.Scene {
   update() {
     // Actualizar el jugador
     this.jugador.update(this.cursors);
+
+    // Actualizar la bomba
+    this.bomba.update();
   }
 }

@@ -27,7 +27,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       repeat: -1,
     });
 
-    // Animación para mover a la derecha (segunda fila)
+    // Animación para mover a la derecha
     scene.anims.create({
       key: "right",
       frames: scene.anims.generateFrameNumbers("player", {
@@ -38,7 +38,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       repeat: -1,
     });
 
-    // Animación para mover hacia arriba (tercera fila)
+    // Animación para mover hacia arriba
     scene.anims.create({
       key: "up",
       frames: scene.anims.generateFrameNumbers("player", {
