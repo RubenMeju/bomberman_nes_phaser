@@ -1,5 +1,6 @@
 import { Player } from "../objects/Player.js";
 import { Bomba } from "../objects/Bomba.js";
+import { Bloque } from "../objects/Bloque.js";
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -13,25 +14,31 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.load.tilemapTiledJSON("mapa", "/assets/mapa.json");
-    this.load.image("tiles", "assets/tileSets.png");
+    this.load.image("tileSets", "assets/tileSets.png");
   }
 
   create() {
     this.cameras.main.setBackgroundColor("#2e8b00");
 
+    // Crear el mapa
     this.mapa = this.make.tilemap({ key: "mapa" });
-    let tilesets = this.mapa.addTilesetImage("tileSets", "tiles");
-    this.solidos = this.mapa.createLayer("solidos", tilesets, 0, 0).setScale(2);
-    this.solidos.setCollisionByProperty({ suelo: true });
 
+    // Instanciar la clase Bloque
+    this.bloques = new Bloque(this, this.mapa, "tileSets", "solidos", {
+      suelo: true,
+    });
+
+    // Crear el jugador
     this.jugador = new Player(this, 0, 0, "player", 0);
-    this.physics.add.collider(this.jugador, this.solidos);
+    this.physics.add.collider(this.jugador, this.bloques.solidos);
 
+    // Configurar los controles
     this.cursors = this.input.keyboard.createCursorKeys();
     this.spaceBar = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
 
+    // Crear grupo de bombas
     this.bombas = this.physics.add.group({
       classType: Bomba,
       maxSize: this.maxBombas,
@@ -41,6 +48,10 @@ export class GameScene extends Phaser.Scene {
     this.maxBombas = 3;
 
     // Crear animaciones
+    this.createAnimations();
+  }
+
+  createAnimations() {
     this.anims.create({
       key: "bomba",
       frames: this.anims.generateFrameNumbers("player", { start: 42, end: 44 }),
