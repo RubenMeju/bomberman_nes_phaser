@@ -34,6 +34,7 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
       // Establecer la profundidad de la explosión para que quede detrás de los sólidos
       explosion.setDepth(this.scene.solidos.depth - 1);
 
+      // Destruir la explosión después de un tiempo
       this.scene.time.delayedCall(
         600,
         () => {
@@ -42,6 +43,11 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
         [],
         this
       );
+
+      // Detectar colisión con el jugador
+      this.scene.physics.add.overlap(explosion, this.scene.jugador, () => {
+        this.scene.jugador.die();
+      });
 
       // Ajustar el tamaño del tile si es necesario
       const tileX = Math.floor((this.x + part.x) / 32);

@@ -14,6 +14,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     // El jugador no puede salir del mundo
     this.setCollideWorldBounds(true);
 
+    // Estado de muerte
+    this.alive = true;
+
     // Crear las animaciones
     this.createAnimations(scene);
   }
@@ -59,9 +62,23 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 10,
       repeat: -1,
     });
+
+    scene.anims.create({
+      key: "death",
+      frames: scene.anims.generateFrameNumbers("player", {
+        start: 28,
+        end: 34,
+      }),
+      frameRate: 7,
+      repeat: -1,
+    });
   }
 
   update(cursors) {
+    if (!this.alive) {
+      this.setVelocity(0, 0); // Detener el movimiento si está muerto
+      return;
+    }
     const velocidad = 200; // Ajusta la velocidad según sea necesario
 
     // Detectar si las teclas de dirección están siendo presionadas
@@ -93,6 +110,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       !cursors.down.isDown
     ) {
       this.anims.stop();
+    }
+  }
+
+  die() {
+    if (this.alive) {
+      this.alive = false;
+      this.anims.play("death"); // Reproducir la animación de muerte
+      this.body.setVelocity(0, 0); // Detener el movimiento
+
+      this.scene.time.delayedCall(1000, () => {
+        this.setVisible(false); // Opcional: ocultar el jugador después de morir
+      });
     }
   }
 }
