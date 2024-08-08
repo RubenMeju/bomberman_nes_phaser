@@ -13,24 +13,20 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
   explode() {
     const explosionParts = [
       { x: 0, y: 0, anim: "explosion_center" },
-      { x: -32, y: 0, anim: "explosion_right" },
-      { x: 32, y: 0, anim: "explosion_left" },
+      { x: -32, y: 0, anim: "explosion_left" },
+      { x: 32, y: 0, anim: "explosion_right" },
       { x: 0, y: -32, anim: "explosion_up" },
       { x: 0, y: 32, anim: "explosion_down" },
     ];
 
     explosionParts.forEach((part) => {
-      const explosion = this.scene.physics.add.sprite(
-        this.x + part.x,
-        this.y + part.y,
-        "player"
-      );
-      explosion.setScale(2);
+      const explosion = this.scene.add
+        .sprite(this.x + part.x, this.y + part.y, "player")
+        .setScale(2);
+      this.scene.physics.add.existing(explosion);
       explosion.play(part.anim);
 
-      explosion.setSize(16, 16);
-      // explosion.body.setOffset(-16, -16);
-
+      explosion.setSize(16, 16); // Ajustar tamaño según los frames
       explosion.setDepth(this.scene.bloques.solidos.depth - 1);
 
       this.scene.time.delayedCall(
