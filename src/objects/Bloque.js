@@ -10,21 +10,33 @@ export class Bloque {
     this.scene = scene;
     this.mapa = mapa;
 
-    // Cargar el tileset
-    const tilesets = this.mapa.addTilesetImage(tilesetKey, tilesetKey);
-
-    // Crear la capa de bloques sólidos
-    this.solidos = this.mapa
-      .createLayer(layerName, tilesets, 0, 0)
-      .setScale(scale);
-
-    // Configurar colisiones
+    // Cargar el tileset y crear la capa
+    const tileset = this.mapa.addTilesetImage(tilesetKey);
+    this.solidos = this.mapa.createLayer(layerName, tileset, 0, 0);
+    this.solidos.setScale(scale);
     this.solidos.setCollisionByProperty(collisionProperty);
   }
 
   // Método para remover un bloque en una posición específica
   removeTileAt(x, y) {
-    this.solidos.removeTileAt(x, y, true);
+    const tile = this.mapa.getTileAt(x, y, true, this.solidos.layer.name);
+
+    if (tile && tile.properties.destruible) {
+      // Obtener las coordenadas del tile en el mundo
+      const worldX = tile.getCenterX();
+      const worldY = tile.getCenterY();
+
+      // Crear un sprite temporal para la animación de destrucción
+      const destructionSprite = this.scene.add.sprite(worldX, worldY, "player");
+      destructionSprite.setScale(2);
+      destructionSprite.play("destruction");
+
+      // Después de que termine la animación, eliminar el sprite y el tile
+      destructionSprite.on("animationcomplete", () => {
+        destructionSprite.destroy();
+        this.solidos.removeTileAt(x, y, true);
+      });
+    }
   }
 
   // Método para verificar si un bloque en una posición es destruible

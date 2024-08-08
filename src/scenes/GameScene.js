@@ -93,6 +93,14 @@ export class GameScene extends Phaser.Scene {
       frameRate: 10,
       repeat: 0,
     });
+
+    //destruir bloque
+    this.anims.create({
+      key: "destruction",
+      frames: this.anims.generateFrameNumbers("player", { start: 47, end: 52 }),
+      frameRate: 18,
+      repeat: 0,
+    });
   }
 
   update() {

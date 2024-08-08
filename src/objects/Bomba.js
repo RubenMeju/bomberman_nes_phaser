@@ -1,5 +1,3 @@
-import { Bloque } from "../objects/Bloque.js"; // Asegúrate de que la clase Bloque esté importada
-
 export class Bomba extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, texture) {
     super(scene, x, y, texture);
