@@ -28,8 +28,8 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
       explosion.setScale(2);
       explosion.play(part.anim);
 
-      explosion.setSize(32, 32);
-      explosion.body.setOffset(-16, -16);
+      explosion.setSize(16, 16);
+      // explosion.body.setOffset(-16, -16);
 
       explosion.setDepth(this.scene.bloques.solidos.depth - 1);
 
