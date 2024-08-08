@@ -31,6 +31,9 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
       explosion.setSize(32, 32); // Tamaño del sprite de explosión
       explosion.body.setOffset(-16, -16); // Ajustar el offset si es necesario
 
+      // Establecer la profundidad de la explosión para que quede detrás de los sólidos
+      explosion.setDepth(this.scene.solidos.depth - 1);
+
       this.scene.time.delayedCall(
         600,
         () => {
