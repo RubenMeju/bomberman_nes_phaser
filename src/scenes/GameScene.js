@@ -1,6 +1,7 @@
 import { Player } from "../objects/Player.js";
 import { Bomba } from "../objects/Bomba.js";
 import { Bloque } from "../objects/Bloque.js";
+import { createAnimations } from "../animations.js";
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -47,77 +48,7 @@ export class GameScene extends Phaser.Scene {
 
     this.maxBombas = 3;
 
-    // Crear animaciones
-    this.createAnimations();
-  }
-
-  createAnimations() {
-    this.anims.create({
-      key: "bomba",
-      frames: this.anims.generateFrameNumbers("player", { start: 42, end: 44 }),
-      frameRate: 4,
-      repeat: -1,
-    });
-
-    // Animación de la explosión en el centro
-    this.anims.create({
-      key: "explosion_center",
-      frames: this.anims.generateFrameNumbers("player", { start: 86, end: 91 }), // Ajustar con frames correctos
-      frameRate: 2,
-      repeat: 0,
-    });
-
-    // Animación de la explosión hacia la derecha
-    this.anims.create({
-      key: "explosion_right",
-      frames: [
-        { key: "player", frame: 85 }, // Ajustar con el primer frame de la dirección derecha
-        { key: "player", frame: 92 }, // Ajustar con el segundo frame de la dirección derecha
-      ],
-      frameRate: 2,
-      repeat: 0,
-    });
-
-    // Animación de la explosión hacia la izquierda
-    this.anims.create({
-      key: "explosion_left",
-      frames: [
-        { key: "player", frame: 87 }, // Ajustar con el primer frame de la dirección izquierda
-        { key: "player", frame: 90 }, // Ajustar con el segundo frame de la dirección izquierda
-      ],
-      frameRate: 2,
-      repeat: 0,
-    });
-
-    // Animación de la explosión hacia arriba
-    this.anims.create({
-      key: "explosion_up",
-      frames: [
-        { key: "player", frame: 72 }, // Ajustar con el primer frame de la dirección arriba
-        { key: "player", frame: 77 }, // Ajustar con el segundo frame de la dirección arriba
-      ],
-      frameRate: 2,
-      repeat: 0,
-    });
-
-    // Animación de la explosión hacia abajo
-    this.anims.create({
-      key: "explosion_down",
-      frames: [
-        { key: "player", frame: 100 }, // Ajustar con el primer frame de la dirección abajo
-        { key: "player", frame: 105 }, // Ajustar con el segundo frame de la dirección abajo
-      ],
-      frameRate: 2,
-      repeat: 0,
-    });
-
-    // Animación de la destrucción del bloque
-    this.anims.create({
-      key: "destruction",
-      frames: this.anims.generateFrameNumbers("player", { start: 47, end: 52 }),
-      frameRate: 18,
-      repeat: 0,
-    });
+    createAnimations(this);
   }
 
   update() {
