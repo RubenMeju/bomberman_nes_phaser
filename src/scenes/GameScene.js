@@ -51,6 +51,13 @@ export class GameScene extends Phaser.Scene {
 
     //ENEMIGOS
     this.enemy = new Enemy(this, 0, 64, "player", 0);
+    this.physics.add.collider(
+      this.enemy,
+      this.bloques.solidos,
+      this.handleEnemyBlockCollision,
+      null,
+      this
+    );
 
     createAnimations(this);
   }
@@ -59,7 +66,6 @@ export class GameScene extends Phaser.Scene {
     this.jugador.update(this.cursors);
 
     this.enemy.update();
-
     if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) {
       if (this.bombas.getTotalUsed() < this.maxBombas) {
         const bomba = this.bombas.get(this.jugador.x, this.jugador.y, "player");
@@ -72,5 +78,10 @@ export class GameScene extends Phaser.Scene {
         }
       }
     }
+  }
+
+  handleEnemyBlockCollision(enemy, block) {
+    // Cambia la dirección del enemigo invirtiendo su velocidad
+    enemy.changeDirection();
   }
 }

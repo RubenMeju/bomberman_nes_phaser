@@ -14,6 +14,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     // El jugador no puede salir del mundo
     this.setCollideWorldBounds(true);
 
+    //velocidad del jugador
+    this.velocidad = 100;
     // Estado de muerte
     this.alive = true;
 
@@ -79,24 +81,23 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.setVelocity(0, 0); // Detener el movimiento si está muerto
       return;
     }
-    const velocidad = 200; // Ajusta la velocidad según sea necesario
 
     // Detectar si las teclas de dirección están siendo presionadas
     if (cursors.left.isDown) {
-      this.setVelocityX(-velocidad); // Mover a la izquierda con velocidad
+      this.setVelocityX(-this.velocidad); // Mover a la izquierda con velocidad
       this.anims.play("left", true); // Reproducir animación hacia la izquierda
     } else if (cursors.right.isDown) {
-      this.setVelocityX(velocidad); // Mover a la derecha con velocidad
+      this.setVelocityX(this.velocidad); // Mover a la derecha con velocidad
       this.anims.play("right", true); // Reproducir animación hacia la derecha
     } else {
       this.setVelocityX(0); // Detener movimiento horizontal si no se presiona ninguna tecla
     }
 
     if (cursors.up.isDown) {
-      this.setVelocityY(-velocidad); // Mover hacia arriba con velocidad
+      this.setVelocityY(-this.velocidad); // Mover hacia arriba con velocidad
       this.anims.play("up", true); // Reproducir animación hacia arriba
     } else if (cursors.down.isDown) {
-      this.setVelocityY(velocidad); // Mover hacia abajo con velocidad
+      this.setVelocityY(this.velocidad); // Mover hacia abajo con velocidad
       this.anims.play("down", true); // Reproducir animación hacia abajo
     } else {
       this.setVelocityY(0); // Detener movimiento vertical si no se presiona ninguna tecla

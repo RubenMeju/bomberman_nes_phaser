@@ -90,7 +90,7 @@ export function createAnimations(scene) {
       start: 216,
       end: 220,
     }),
-    frameRate: 7,
+    frameRate: 3,
     repeat: 0,
   });
 }
