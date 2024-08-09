@@ -60,6 +60,15 @@ export class GameScene extends Phaser.Scene {
       this
     );
 
+    // Añadir colisión entre bombas y enemigos
+    this.physics.add.collider(
+      this.enemies,
+      this.bombas,
+      this.handleEnemyBlockCollision,
+      null,
+      this
+    );
+
     // Configurar los controles
     this.cursors = this.input.keyboard.createCursorKeys();
     this.spaceBar = this.input.keyboard.addKey(
@@ -83,6 +92,8 @@ export class GameScene extends Phaser.Scene {
         const bomba = this.bombas.get(this.jugador.x, this.jugador.y, "player");
 
         if (bomba) {
+          bomba.body.setImmovable(true);
+
           bomba.setActive(true).setVisible(true);
           bomba.anims.play("bomba");
 
