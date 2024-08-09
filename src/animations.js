@@ -1,4 +1,3 @@
-// animations.js
 export function createAnimations(scene) {
   scene.anims.create({
     key: "bomba",
@@ -7,53 +6,53 @@ export function createAnimations(scene) {
     repeat: -1,
   });
 
+  const frameRateExplosion = 4;
+
+  const explosionFrames = (frames) => {
+    return frames.map((frame) => ({ key: "player", frame: frame }));
+  };
+
+  // Centro
   scene.anims.create({
     key: "explosion_center",
-    frames: scene.anims.generateFrameNumbers("player", { start: 86, end: 91 }),
-    frameRate: 2,
+    frames: explosionFrames([86, 91, 149, 154]),
+    frameRate: frameRateExplosion,
     repeat: 0,
   });
 
+  // Derecha
   scene.anims.create({
     key: "explosion_right",
-    frames: [
-      { key: "player", frame: 85 },
-      { key: "player", frame: 92 },
-    ],
-    frameRate: 2,
+    frames: explosionFrames([87, 92, 150, 165]),
+    frameRate: frameRateExplosion,
     repeat: 0,
   });
 
+  // Izquierda
   scene.anims.create({
     key: "explosion_left",
-    frames: [
-      { key: "player", frame: 87 },
-      { key: "player", frame: 90 },
-    ],
-    frameRate: 2,
+    frames: explosionFrames([85, 90, 148, 153]),
+    frameRate: frameRateExplosion,
     repeat: 0,
   });
 
+  // Arriba
   scene.anims.create({
     key: "explosion_up",
-    frames: [
-      { key: "player", frame: 72 },
-      { key: "player", frame: 77 },
-    ],
-    frameRate: 2,
+    frames: explosionFrames([72, 77, 135, 140]),
+    frameRate: frameRateExplosion,
     repeat: 0,
   });
 
+  // Abajo
   scene.anims.create({
     key: "explosion_down",
-    frames: [
-      { key: "player", frame: 100 },
-      { key: "player", frame: 105 },
-    ],
-    frameRate: 2,
+    frames: explosionFrames([100, 105, 171, 176]),
+    frameRate: frameRateExplosion,
     repeat: 0,
   });
 
+  // Destrucción
   scene.anims.create({
     key: "destruction",
     frames: scene.anims.generateFrameNumbers("player", { start: 47, end: 52 }),
