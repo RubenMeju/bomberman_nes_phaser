@@ -1,4 +1,5 @@
 export function createAnimations(scene) {
+  //animaciones bomba
   scene.anims.create({
     key: "bomba",
     frames: scene.anims.generateFrameNumbers("player", { start: 42, end: 44 }),
@@ -52,11 +53,44 @@ export function createAnimations(scene) {
     repeat: 0,
   });
 
-  // Destrucción
+  // Destrucción de un bloque
   scene.anims.create({
     key: "destruction",
     frames: scene.anims.generateFrameNumbers("player", { start: 47, end: 52 }),
     frameRate: 18,
+    repeat: 0,
+  });
+
+  //ENEMIGOS
+  // Animación para mover a la izquierda
+  scene.anims.create({
+    key: "left_enemy1",
+    frames: scene.anims.generateFrameNumbers("player", {
+      start: 213,
+      end: 215,
+    }),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  // Animación para mover a la derecha
+  scene.anims.create({
+    key: "right_enemy1",
+    frames: scene.anims.generateFrameNumbers("player", {
+      start: 210,
+      end: 212,
+    }),
+    frameRate: 3,
+    repeat: -1,
+  });
+
+  scene.anims.create({
+    key: "death_enemy1",
+    frames: scene.anims.generateFrameNumbers("player", {
+      start: 216,
+      end: 220,
+    }),
+    frameRate: 7,
     repeat: 0,
   });
 }

@@ -1,6 +1,7 @@
 import { Player } from "../objects/Player.js";
 import { Bomba } from "../objects/Bomba.js";
 import { Bloque } from "../objects/Bloque.js";
+import { Enemy } from "../objects/Enemy.js";
 import { createAnimations } from "../animations.js";
 
 export class GameScene extends Phaser.Scene {
@@ -48,11 +49,16 @@ export class GameScene extends Phaser.Scene {
 
     this.maxBombas = 3;
 
+    //ENEMIGOS
+    this.enemy = new Enemy(this, 0, 64, "player", 0);
+
     createAnimations(this);
   }
 
   update() {
     this.jugador.update(this.cursors);
+
+    this.enemy.update();
 
     if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) {
       if (this.bombas.getTotalUsed() < this.maxBombas) {
