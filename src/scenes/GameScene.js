@@ -7,6 +7,9 @@ import { createAnimations } from "../animations.js";
 export class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: "GameScene" });
+
+    this.maxBombas = 3;
+    this.maxEnemies = 3;
   }
 
   preload() {
@@ -34,12 +37,6 @@ export class GameScene extends Phaser.Scene {
     this.jugador = new Player(this, 0, 0, "player", 0);
     this.physics.add.collider(this.jugador, this.bloques.solidos);
 
-    // Configurar los controles
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.spaceBar = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.SPACE
-    );
-
     // Crear grupo de bombas
     this.bombas = this.physics.add.group({
       classType: Bomba,
@@ -47,25 +44,40 @@ export class GameScene extends Phaser.Scene {
       runChildUpdate: true,
     });
 
-    this.maxBombas = 3;
+    // Crear grupo de enemigos
+    this.enemies = this.physics.add.group({
+      classType: Enemy,
+      maxSize: this.maxEnemies,
+      runChildUpdate: true,
+    });
 
-    //ENEMIGOS
-    this.enemy = new Enemy(this, 0, 64, "player", 0);
+    // Añadir colisión entre enemigos y bloques
     this.physics.add.collider(
-      this.enemy,
+      this.enemies,
       this.bloques.solidos,
       this.handleEnemyBlockCollision,
       null,
       this
     );
 
+    // Configurar los controles
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.spaceBar = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
+
     createAnimations(this);
+
+    // Crear enemigos iniciales (Ejemplo)
+    this.createInitialEnemies();
   }
 
   update() {
     this.jugador.update(this.cursors);
 
-    this.enemy.update();
+    // Actualizar todos los enemigos en el grupo
+    this.enemies.children.each((enemy) => enemy.update(), this);
+
     if (Phaser.Input.Keyboard.JustDown(this.spaceBar)) {
       if (this.bombas.getTotalUsed() < this.maxBombas) {
         const bomba = this.bombas.get(this.jugador.x, this.jugador.y, "player");
@@ -83,5 +95,47 @@ export class GameScene extends Phaser.Scene {
   handleEnemyBlockCollision(enemy, block) {
     // Cambia la dirección del enemigo invirtiendo su velocidad
     enemy.changeDirection();
+  }
+
+  createInitialEnemies() {
+    for (let i = 0; i < this.maxEnemies; i++) {
+      // Obtén una posición aleatoria válida para colocar el enemigo
+      const position = this.getRandomPosition();
+
+      if (position) {
+        const enemy = this.enemies.get(position.x, position.y, "player");
+
+        if (enemy) {
+          enemy.setOrigin(0, 0);
+          enemy.setActive(true).setVisible(true);
+          enemy.setCollideWorldBounds(true); // El jugador no puede salir del mundo
+          enemy.anims.play("right_enemy1");
+        }
+      }
+    }
+  }
+
+  getRandomPosition() {
+    const validPositions = [];
+    const layer = this.mapa.getLayer("solidos"); // Cambia 'solidos' por el nombre de la capa adecuada
+    const tiles = layer.tilemapLayer.getTilesWithin(
+      0,
+      0,
+      layer.tilemapLayer.width,
+      layer.tilemapLayer.height
+    );
+
+    tiles.forEach((tile) => {
+      if (!tile.properties.suelo) {
+        validPositions.push({
+          x: tile.pixelX,
+          y: tile.pixelY,
+        });
+      }
+    });
+
+    if (validPositions.length === 0) return null;
+    const randomIndex = Phaser.Math.Between(0, validPositions.length - 1);
+    return validPositions[randomIndex];
   }
 }

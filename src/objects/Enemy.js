@@ -11,9 +11,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     // Ajustar el tamaño del collider
     this.body.setSize(12, 14);
 
-    // El jugador no puede salir del mundo
-    this.setCollideWorldBounds(true);
-
     // Velocidad del enemigo
     this.velocidad = 65;
 
