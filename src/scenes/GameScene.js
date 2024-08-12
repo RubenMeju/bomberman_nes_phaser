@@ -34,7 +34,7 @@ export class GameScene extends Phaser.Scene {
     });
 
     // Crear el jugador
-    this.jugador = new Player(this, 0, 0, "player", 0);
+    this.jugador = new Player(this, 48, 48, "player", 0);
     this.physics.add.collider(this.jugador, this.bloques.solidos);
 
     // Crear grupo de bombas
