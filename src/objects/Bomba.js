@@ -42,6 +42,14 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
         this.scene.jugador.die();
       });
 
+      this.scene.physics.add.overlap(
+        explosion,
+        this.scene.enemies,
+        this.scene.handleExplosionEnemyCollision,
+        null,
+        this
+      );
+
       const tileX = Math.floor((this.x + part.x) / 32);
       const tileY = Math.floor((this.y + part.y) / 32);
 

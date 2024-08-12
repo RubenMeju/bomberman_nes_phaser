@@ -108,6 +108,10 @@ export class GameScene extends Phaser.Scene {
     enemy.changeDirection();
   }
 
+  handleExplosionEnemyCollision(explosionPart, enemy) {
+    enemy.die(enemy); // Llama al método die del enemigo
+  }
+
   createInitialEnemies() {
     for (let i = 0; i < this.maxEnemies; i++) {
       // Obtén una posición aleatoria válida para colocar el enemigo
