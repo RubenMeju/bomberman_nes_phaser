@@ -6,7 +6,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     // Escalar el sprite
-    this.setScale(2);
+    this.setScale(this.scene.escalado);
 
     // Ajustar el tamaño del collider
     this.body.setSize(12, 14);

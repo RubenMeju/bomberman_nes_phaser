@@ -1,19 +1,12 @@
 export class Bloque {
-  constructor(
-    scene,
-    mapa,
-    tilesetKey,
-    layerName,
-    collisionProperty,
-    scale = 2
-  ) {
+  constructor(scene, mapa, tilesetKey, layerName, collisionProperty) {
     this.scene = scene;
     this.mapa = mapa;
 
     // Cargar el tileset y crear la capa
     const tileset = this.mapa.addTilesetImage(tilesetKey);
     this.solidos = this.mapa.createLayer(layerName, tileset, 0, 0);
-    this.solidos.setScale(scale);
+    this.solidos.setScale(this.scene.escalado);
     this.solidos.setCollisionByProperty(collisionProperty);
   }
 
@@ -28,7 +21,7 @@ export class Bloque {
 
       // Crear un sprite temporal para la animación de destrucción
       const destructionSprite = this.scene.add.sprite(worldX, worldY, "player");
-      destructionSprite.setScale(2);
+      destructionSprite.setScale(this.scene.escalado);
       destructionSprite.play("destruction");
 
       // Después de que termine la animación, eliminar el sprite y el tile

@@ -4,7 +4,7 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setScale(2);
+    this.setScale(this.scene.escalado);
     this.body.setSize(12, 14);
     this.setCollideWorldBounds(true);
     this.setActive(false).setVisible(false);
@@ -22,7 +22,7 @@ export class Bomba extends Phaser.Physics.Arcade.Sprite {
     explosionParts.forEach((part) => {
       const explosion = this.scene.add
         .sprite(this.x + part.x, this.y + part.y, "player")
-        .setScale(2);
+        .setScale(this.scene.escalado);
       this.scene.physics.add.existing(explosion);
       explosion.play(part.anim);
 

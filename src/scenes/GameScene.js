@@ -8,6 +8,7 @@ export class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: "GameScene" });
 
+    this.escalado = 3;
     this.maxBombas = 3;
     this.maxEnemies = 3;
   }
